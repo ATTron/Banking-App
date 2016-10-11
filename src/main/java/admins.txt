@@ -1,0 +1,10 @@
+admin1
+password1
+Barak Obama
+1234
+
+admin2
+password2
+Hillary Clinton
+5678
+
