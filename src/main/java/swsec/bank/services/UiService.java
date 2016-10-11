@@ -44,6 +44,57 @@ public class UiService implements Runnable {
     }
   }
 
+
+  public static String stripHtml(String inStr){
+    boolean inTag = false;
+    char c;
+    int tagPos = 0;
+    StringBuffer outStr = new StringBuffer();
+    int len = inStr.length();
+    for (int i = 0; i < len; i++){
+      c = inStr.charAt(i);
+      if(c == '<'){
+        outStr.append(" ");
+        tagPos = 0;
+        inTag = true;
+      }
+      if (!inTag){
+        outStr.append(c);
+      }
+      if (c == '>'){
+        inTag = false;
+        if (tagPos == 1){
+          outStr.append(" <> ");
+          tagPos = 0;
+        }
+      }
+      tagPos +=1;
+    }
+    return outStr.toString();
+  }
+
+
+  private static final String BLACK_LIST_INPUT = "*[]#$";
+  public static boolean isBlackList(String val){
+    if (val == null){
+      return false;
+    }
+    for (int i=0;i<val.length();i++){
+      if(BLACK_LIST_INPUT.indexOf(val.charAt(i))<0){
+        return false;
+      }
+    }
+    return true;
+  }
+
+  public static String cleanseInput(String input){
+    String wipe = stripHtml(input);
+    if(isBlackList(wipe) == true){
+      System.out.println("Black list characters used");
+    }
+    return wipe;
+  }
+
   protected boolean initialLogin () {
     // allow user to try to log in as many times as they want
 
@@ -58,12 +109,14 @@ public class UiService implements Runnable {
       System.out.println("Please type your username or EXIT to quit:");
 
       inUsername = scanner.next();
+      inUsername = cleanseInput(inUsername);
 
       wantsToQuit = (inUsername.compareTo("EXIT") == 0);
 
       if (!wantsToQuit) {
         System.out.println("Please type your password:");
         inPassword = scanner.next();
+        inPassword = cleanseInput(inPassword);
         
         loggedIn = true;  
 
