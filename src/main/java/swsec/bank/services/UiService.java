@@ -54,7 +54,7 @@ public class UiService implements Runnable {
     for (int i = 0; i < len; i++){
       c = inStr.charAt(i);
       if(c == '<'){
-        outStr.append(" ");
+        outStr.append("");
         tagPos = 0;
         inTag = true;
       }
@@ -74,23 +74,41 @@ public class UiService implements Runnable {
   }
 
 
-  private static final String BLACK_LIST_INPUT = "*[]#$";
+  public static final String BLACK_LIST_INPUT = "*[]#$";
   public static boolean isBlackList(String val){
     if (val == null){
-      return false;
+      return true;
     }
     for (int i=0;i<val.length();i++){
-      if(BLACK_LIST_INPUT.indexOf(val.charAt(i))<0){
-        return false;
+      if(BLACK_LIST_INPUT.indexOf(val.charAt(i))!=-1){
+        return true;
       }
     }
-    return true;
+    return false;
   }
+
+  public static final String SQLI_CHARACTER_CHECK = "-%+=&";
+  public static boolean detectSQLInjection(String input){
+    if (input == null){
+      return true;
+    }
+    for (int i=0;i<input.length();i++){
+      if (SQLI_CHARACTER_CHECK.indexOf(input.charAt(i))!=-1){
+        return true;
+      }
+    }
+    return false;
+  }
+
+
 
   public static String cleanseInput(String input){
     String wipe = stripHtml(input);
     if(isBlackList(wipe) == true){
       System.out.println("Black list characters used");
+    }
+    if(detectSQLInjection(wipe) == true){
+      System.out.println("SQL injection detected");
     }
     return wipe;
   }
