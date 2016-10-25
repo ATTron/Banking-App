@@ -1,6 +1,7 @@
 
 package swsec.bank.services;
 
+import swsec.bank.services.Credentials;
 import swsec.bank.controllers.AccountController;
 import swsec.bank.controllers.AdminController;
 import swsec.bank.controllers.CustomerController;
@@ -150,11 +151,12 @@ public class UiService implements Runnable {
         inPassword = scanner.next();
         inPassword = cleanseInput(inPassword);
         
-        loggedIn = true;  
+        loggedIn = true;
+        Credentials loginCreds = new Credentials(inUsername, inPassword);  
 
         // creates a new customer controller object, also authenticates
         try {
-          thisCust = new CustomerController (inUsername, inPassword);
+          thisCust = new CustomerController (loginCreds);
         } catch (IOException ex) {
           System.out.println ("Something went wrong with our database. Let's try again...");
           loggedIn = false;
@@ -276,8 +278,9 @@ public class UiService implements Runnable {
     String username = scanner.nextLine ();
     System.out.println ("Admin's password: ");
     String password = scanner.nextLine ();
+    Credentials loginCreds = new Credentials(username, password);
 
-    if (thisAdmin.authenticate (username, password)) {
+    if (thisAdmin.authenticate (loginCreds)) {
       return (thisAdmin);
     } else {
       System.out.println ("Admin not verified.");

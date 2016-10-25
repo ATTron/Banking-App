@@ -1,5 +1,6 @@
 package swsec.bank.controllers;
 
+import swsec.bank.services.Credentials;
 import swsec.bank.models.Customer;
 import swsec.bank.services.repositories.CustomerRepository;
 import swsec.bank.services.verificationSystem;
@@ -23,13 +24,13 @@ public class CustomerController {
 
   // constructor - called when a customer logs in, so username and password are known, but no other attributes are yet known
   // Assumes that all customers are created a priori; a new constructor will need to be added to create a new customer that does not previously exist
-  public CustomerController(String username, String password) throws CustNotFoundException, IOException  {
+  public CustomerController(Credentials creds) throws CustNotFoundException, IOException  {
     
     int accountNum;
 
     // every instance of CustomerController needs a thisRep and a thisCust
     thisRep = new CustomerRepository();
-    thisCust = new Customer(username, password);
+    thisCust = new Customer(creds.getUsername(), creds.getPassword());
 
     //make sure it's a valid Customer
     try {
@@ -39,7 +40,7 @@ public class CustomerController {
       throw new IOException (); 
     }
     if (accountNum == -1) {      //customer was not found or password wrong
-      throw new CustNotFoundException (username);
+      throw new CustNotFoundException (creds.getUsername());
     }
     else {
       if (accountNum > 0)  //customer has an account 

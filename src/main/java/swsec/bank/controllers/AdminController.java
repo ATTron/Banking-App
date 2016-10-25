@@ -1,5 +1,6 @@
 package swsec.bank.controllers;
 
+import swsec.bank.services.Credentials;
 import swsec.bank.models.Admin;
 import swsec.bank.models.Customer;
 import swsec.bank.services.repositories.AdminRepository;
@@ -21,8 +22,8 @@ public class AdminController {
 
   // uses thisRep to look up Admin - if successful, will load Admin attributes into thisAdmin
   // and mark authenticated
-  public boolean authenticate(String username, String password) {
-    thisAdmin.setCredentials(username, password);
+  public boolean authenticate(Credentials creds) {
+    thisAdmin.setCredentials(creds.getUsername(), creds.getPassword());
     Admin tempAdmin = thisRep.lookup (thisAdmin);
     if (tempAdmin.isAuthenticated ()) {
       thisAdmin = tempAdmin;
