@@ -12,6 +12,8 @@ import swsec.bank.exceptions.CustomerNotAuthenticatedException;
 import swsec.bank.exceptions.InsufficientFundsException;
 import swsec.bank.exceptions.AccountNotFoundException;
 import swsec.bank.exceptions.AdminNotFoundException;
+import swsec.bank.exceptions.MaliciousInputException;
+
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -22,6 +24,8 @@ public class UiService implements Runnable {
   AccountController thisAcct;    // represents the Account belonging to the customer currently interacting with the UI
   AdminController thisAdmin;     // represents the Admin currently interacting with the UI
   verificationSystem VS = new verificationSystem ();
+  public static boolean isUser = false;
+  public static String wipe = "";
 
   public UiService() {  //constructor doesn't really do anything
   }
@@ -103,13 +107,23 @@ public class UiService implements Runnable {
 
 
   public static String cleanseInput(String input){
-    String wipe = stripHtml(input);
-    if(isBlackList(wipe) == true){
-      System.out.println("Black list characters used");
-    }
-    if(detectSQLInjection(wipe) == true){
-      System.out.println("SQL injection detected");
-    }
+    wipe = stripHtml(input); 
+      try{
+        if(isBlackList(wipe) == true || detectSQLInjection(wipe) == true){
+          throw new MaliciousInputException();
+        }
+      }
+      catch(MaliciousInputException e){
+        if(isUser == true){
+          System.err.println(e.toStringUser());
+          System.exit(1);
+        }else{
+          System.err.println(e + " " + wipe);
+          System.exit(1);
+        }
+      }
+      finally{
+      }
     return wipe;
   }
 
