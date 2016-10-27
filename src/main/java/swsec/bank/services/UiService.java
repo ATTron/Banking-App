@@ -18,6 +18,7 @@ import swsec.bank.exceptions.MaliciousInputException;
 
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.logging.*;
 
 public class UiService implements Runnable {
 
@@ -27,8 +28,41 @@ public class UiService implements Runnable {
   verificationSystem VS = new verificationSystem ();
   public static boolean isUser = false;
   public static String wipe = "";
+  private static final Logger LOGGER = Logger.getLogger(UiService.class.getName());
 
-  public UiService() {  //constructor doesn't really do anything
+  public UiService() {
+
+    LOGGER.setUseParentHandlers(false);
+
+    Handler fileHandler = null;
+
+    try {
+      fileHandler = new FileHandler("./IS472.log");
+      fileHandler.setFormatter(new SimpleFormatter());
+
+      LOGGER.addHandler(fileHandler);
+      LOGGER.config("Configuration done.");
+      LOGGER.log(Level.FINE, "Finer logged");
+    }
+    catch(IOException exception){
+      LOGGER.log(Level.SEVERE, "Error occur in FileHandler.", exception);
+    }
+    finally{
+    }
+
+    LOGGER.info("Logger Name: "+LOGGER.getName());
+    LOGGER.warning("Can cause ArrayIndexOutOfBoundsException");
+
+    int []a = {1,2,3};
+    int index = 4;
+    LOGGER.config("index is set to "+index);
+
+    try{
+      System.out.println(a[index]);
+    }
+    catch(ArrayIndexOutOfBoundsException ex){
+      LOGGER.log(Level.SEVERE, "Exception occurred", ex);
+    }
   }
 
   //This gets called by main() in class Runner
@@ -117,9 +151,11 @@ public class UiService implements Runnable {
       catch(MaliciousInputException e){
         if(isUser == true){
           System.err.println(e.toStringUser());
+          LOGGER.log(Level.SEVERE, e + " " + wipe);
           System.exit(1);
         }else{
           System.err.println(e + " " + wipe);
+          LOGGER.log(Level.SEVERE, e + " " + wipe);
           System.exit(1);
         }
       }
@@ -278,6 +314,8 @@ public class UiService implements Runnable {
     String username = scanner.nextLine ();
     System.out.println ("Admin's password: ");
     String password = scanner.nextLine ();
+    username = cleanseInput(username);
+    password = cleanseInput(password);
     Credentials loginCreds = new Credentials(username, password);
 
     if (thisAdmin.authenticate (loginCreds)) {
