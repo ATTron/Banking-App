@@ -27,6 +27,7 @@ public class UiService implements Runnable {
   AdminController thisAdmin;     // represents the Admin currently interacting with the UI
   verificationSystem VS = new verificationSystem ();
   public static boolean isUser = false;
+  public static boolean wantsToQuit = false;
   public static String wipe = "";
   private static final Logger LOGGER = Logger.getLogger(UiService.class.getName());
 
@@ -51,18 +52,6 @@ public class UiService implements Runnable {
     }
 
     LOGGER.info("Logger Name: "+LOGGER.getName());
-    LOGGER.warning("Can cause ArrayIndexOutOfBoundsException");
-
-    int []a = {1,2,3};
-    int index = 4;
-    LOGGER.config("index is set to "+index);
-
-    try{
-      System.out.println(a[index]);
-    }
-    catch(ArrayIndexOutOfBoundsException ex){
-      LOGGER.log(Level.SEVERE, "Exception occurred", ex);
-    }
   }
 
   //This gets called by main() in class Runner
@@ -141,33 +130,18 @@ public class UiService implements Runnable {
 
 
 
-  public static String cleanseInput(String input){
-    wipe = stripHtml(input); 
-      try{
-        if(isBlackList(wipe) == true || detectSQLInjection(wipe) == true){
-          throw new MaliciousInputException();
-        }
-      }
-      catch(MaliciousInputException e){
-        if(isUser == true){
-          System.err.println(e.toStringUser());
-          LOGGER.log(Level.SEVERE, e + " " + wipe);
-          System.exit(1);
-        }else{
-          System.err.println(e + " " + wipe);
-          LOGGER.log(Level.SEVERE, e + " " + wipe);
-          System.exit(1);
-        }
-      }
-      finally{
-      }
+  public static String cleanseInput(String input) throws MaliciousInputException{
+    wipe = stripHtml(input);
+    if(isBlackList(wipe) == true || detectSQLInjection(wipe) == true){
+      throw new MaliciousInputException();
+    }
     return wipe;
   }
 
   protected boolean initialLogin () {
     // allow user to try to log in as many times as they want
 
-    boolean wantsToQuit = false;
+    //boolean wantsToQuit = false;
     boolean loggedIn = false;
     String inUsername;   //the username typed in
     String inPassword;   // the password typed in
@@ -178,14 +152,46 @@ public class UiService implements Runnable {
       System.out.println("Please type your username or EXIT to quit:");
 
       inUsername = scanner.next();
-      inUsername = cleanseInput(inUsername);
+      try{
+        inUsername = cleanseInput(inUsername);
+      }
+      catch(MaliciousInputException e){
+        if(isUser == true){
+          System.err.println(e.toStringUser());
+          LOGGER.log(Level.SEVERE, e + " " + wipe);
+          return true;
+        }else{
+          System.err.println(e + " " + wipe);
+          LOGGER.log(Level.SEVERE, e + " " + wipe);
+          return true;
+        }
+      }
+      finally{
+      }
+      //inUsername = cleanseInput(inUsername);
 
       wantsToQuit = (inUsername.compareTo("EXIT") == 0);
 
       if (!wantsToQuit) {
         System.out.println("Please type your password:");
         inPassword = scanner.next();
-        inPassword = cleanseInput(inPassword);
+        try{
+          inPassword = cleanseInput(inPassword);
+        }
+        catch(MaliciousInputException e){
+          if(isUser == true){
+            System.err.println(e.toStringUser());
+            LOGGER.log(Level.SEVERE, e + " " + wipe);
+            return true;
+          }else{
+            System.err.println(e + " " + wipe);
+            LOGGER.log(Level.SEVERE, e + " " + wipe);
+            return true;
+          }
+        }
+        finally{
+        }
+       // inPassword = cleanseInput(inPassword);
         
         loggedIn = true;
         Credentials loginCreds = new Credentials(inUsername, inPassword);  
@@ -314,8 +320,19 @@ public class UiService implements Runnable {
     String username = scanner.nextLine ();
     System.out.println ("Admin's password: ");
     String password = scanner.nextLine ();
-    username = cleanseInput(username);
-    password = cleanseInput(password);
+    try{
+      username = cleanseInput(username);
+      password = cleanseInput(password);
+    }
+    catch(MaliciousInputException e){
+      System.err.println(e + " " + wipe);
+      LOGGER.log(Level.SEVERE, e + " " + wipe);
+      System.exit(1);
+    }
+    finally{
+    }
+    //username = cleanseInput(username);
+    //password = cleanseInput(password);
     Credentials loginCreds = new Credentials(username, password);
 
     if (thisAdmin.authenticate (loginCreds)) {
