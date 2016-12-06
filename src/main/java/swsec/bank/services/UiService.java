@@ -320,8 +320,12 @@ public class UiService implements Runnable {
     System.out.println("Time to authenticate the Administrator. Please let the Administrator type in their credentials...");
     System.out.println("Admin's username: ");
     String username = scanner.nextLine();
-    System.out.println("Admin's password: ");
-    String password = scanner.nextLine();
+    Console console = System.console();
+    if (console == null) {
+      System.out.println("console not active!");
+      System.exit(0);
+    }
+    String password = new String(console.readPassword("Admin's password: "));
     try {
       username = cleanseInput(username);
       password = cleanseInput(password);
