@@ -16,6 +16,7 @@ import swsec.bank.services.Credentials;
 
 
 import java.io.IOException;
+import java.io.Console;
 import java.util.Scanner;
 import java.util.logging.*;
 
@@ -170,8 +171,13 @@ public class UiService implements Runnable {
       wantsToQuit = (inUsername.compareTo("EXIT") == 0);
 
       if (!wantsToQuit) {
-        System.out.println("Please type your password:");
-        inPassword = scanner.next();
+        // using console to get access to readPassword() method
+        Console console = System.console();
+        if (console == null){
+          System.out.println("Console not active !");
+          System.exit(0);
+        }
+        inPassword = new String(console.readPassword("Please type your password: "));
         try {
           inPassword = cleanseInput(inPassword); 
         } catch (MaliciousInputException e) {
