@@ -24,8 +24,8 @@ public class AdminController {
   // and mark authenticated
   public boolean authenticate(Credentials creds) {
     thisAdmin.setCredentials(creds.getUsername(), creds.getPassword());
-    Admin tempAdmin = thisRep.lookup (thisAdmin);
-    if (tempAdmin.isAuthenticated ()) {
+    Admin tempAdmin = thisRep.lookup(thisAdmin);
+    if (tempAdmin.isAuthenticated()) {
       thisAdmin = tempAdmin;
       return (true); 
     } else {
@@ -33,7 +33,7 @@ public class AdminController {
     } 
   }
 
-  public int requestAccount (float initialBalance) {
+  public int requestAccount(float initialBalance) {
     // called by CustomerController
     // needs to create an instance of UiService, which authenticates the Admin
     // then needs to create an instance of an AccountController, which it uses to create the new account
@@ -41,24 +41,24 @@ public class AdminController {
     // TBD
     // UiService thisUIS = new UiService ();
     // thisUIS.authenticateAdmin ();
-    AccountController thisNewAcct = new AccountController (0);
-    return thisNewAcct.newAccount (initialBalance);
+    AccountController thisNewAcct = new AccountController(0);
+    return thisNewAcct.newAccount(initialBalance);
   }
 
-  public void modifyBalance (int accountNum, float newBalance) throws IOException, AccountNotFoundException {
+  public void modifyBalance(int accountNum, float newBalance) throws IOException, AccountNotFoundException {
     // checks to make sure this Admin object is authenticated
     // creates an instance of AccountController and uses it to modify the balance
-    if (thisAdmin.isAuthenticated ()) {
+    if (thisAdmin.isAuthenticated()) {
       AccountController thisAcct = new AccountController(accountNum);
       try {
-        thisAcct.changeBalance (newBalance);
+        thisAcct.changeBalance(newBalance);
       } catch (IOException ex) {
-        throw new IOException ();
+        throw new IOException();
       } catch (AccountNotFoundException acctEx) {
-        throw new AccountNotFoundException (accountNum);
+        throw new AccountNotFoundException(accountNum);
       }
     } else {
-      System.out.println ("Admin needs to be authenticated first.");
+      System.out.println("Admin needs to be authenticated first.");
     }
   }
 }

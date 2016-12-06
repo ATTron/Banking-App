@@ -23,34 +23,34 @@ public class Admin {
     this.employeeId = employeeId;
   }
 
-  public Admin (String name, String employeeId) {
+  public Admin(String name, String employeeId) {
     //sometimes an Admin object needs to be created before login credentials are known
     this.name = name;
     this.employeeId = employeeId;
   }
 
-  public void setCredentials (String username, String password) {
+  public void setCredentials(String username, String password) {
     this.username = username;
     this.password = password;
   }
 
-  public void markAuthenticated () {
+  public void markAuthenticated() {
     this.authenticated = true;
   }
 
-  public String getUsername () {
+  public String getUsername() {
     return this.username;
   }
 
-  public String getPassword () {
+  public String getPassword() {
     return this.password;
   }
 
-  public String getName () {
+  public String getName() {
     return this.name;
   }
 
-  public String getEmployeeId () {
+  public String getEmployeeId() {
     return this.employeeId;
   }
 

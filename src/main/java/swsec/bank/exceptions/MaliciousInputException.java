@@ -7,23 +7,23 @@ public class MaliciousInputException extends Exception {
   private String errorUser = "Entered invalid characters. Closing application...";
   private String errorDev = "The user has entered in invalid characters for login: ";
 
-  public MaliciousInputException(){
-    super ();
+  public MaliciousInputException() {
+    super();
   }
 
-  public String getLoginCreds(){
+  public String getLoginCreds() {
     return loginCreds;
   }
   
-  public boolean getInfo(){
+  public boolean getInfo() {
     return isUser;
   }
 
-  public String toStringUser(){
+  public String toStringUser() {
     return errorUser;
   }
 
-  public String toString(){
+  public String toString() {
     return errorDev;
   }
 }

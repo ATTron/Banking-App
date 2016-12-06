@@ -31,7 +31,7 @@ public class TestUiService{
     boolean thrown = false;
 
     try{
-      UiS.cleanseInput("<h1>cseama$$$$$$n--+==#$%^&*()(*&^%$#$%^&*");
+      UiS.cleanseInput("<h1>$--+=#$%^&*");
     }
     catch(MaliciousInputException e){
       thrown = true;

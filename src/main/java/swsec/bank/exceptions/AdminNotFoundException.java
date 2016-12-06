@@ -7,12 +7,12 @@ public class AdminNotFoundException extends Exception {
   private String username; 
 
   // constructor
-  public AdminNotFoundException (String username) {
-    super ("Admin " + username + " does not exist.");
+  public AdminNotFoundException(String username) {
+    super("Admin " + username + " does not exist.");
     this.username = username;
   }
 
-  public String getUsername () {
+  public String getUsername() {
     return username;
   }
 

@@ -8,13 +8,14 @@ public class InsufficientFundsException extends Exception {
   private Float amount; 
 
   // constructor
-  public InsufficientFundsException (String username, Float amount) {
-    super ("Customer " + username + " does not have sufficient funds to cover a withdrawal of " + Float.toString (amount));
+  public InsufficientFundsException(String username, Float amount) {
+    super("Customer " + username 
+        + " does not have sufficient funds to cover a withdrawal of " + Float.toString(amount));
     this.username = username;
     this.amount = amount;
   }
 
-  public Float getAmount () {
+  public Float getAmount() {
     return amount;
   }
 

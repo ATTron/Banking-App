@@ -7,12 +7,12 @@ public class AccountNotFoundException extends Exception {
   private int accountNum;
 
   // constructor
-  public AccountNotFoundException (int accountNum) {
-    super ("Account " + Integer.toString(accountNum) + " does not exist.");
+  public AccountNotFoundException(int accountNum) {
+    super("Account " + Integer.toString(accountNum) + " does not exist.");
     this.accountNum = accountNum;
   }
 
-  public int getAccountNum () {
+  public int getAccountNum() {
     return accountNum;
   }
 

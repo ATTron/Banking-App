@@ -19,59 +19,59 @@ public class Customer {
     this.address = address;
   }
 
-  public Customer (String username, String password) {
+  public Customer(String username, String password) {
     //sometimes a Customer object needs to be created in order to retrieve Customer attributes
     this.username = username;
     this.password = password;
   }
 
-  public void markAuthenticated () {
+  public void markAuthenticated() {
     // called after the associated Repository object confirms credentials
     this.authenticated = true;
   }
 
-  public void setAccountNum (int accountNum) {
+  public void setAccountNum(int accountNum) {
     this.accountNum = accountNum;
   }
 
-  public void setName (String name) {
+  public void setName(String name) {
     this.name = name;
   }
 
-  public void setAddress (String address) {
+  public void setAddress(String address) {
     this.address = address;
   }
 
-  public void setCredentials (String username, String password) {
+  public void setCredentials(String username, String password) {
     this.username = username; 
     this.password = password;
   }
 
-  public void logout () {
+  public void logout() {
     this.authenticated = false;
   }
 
-  public String getUsername () {
+  public String getUsername() {
     return this.username;
   }
 
-  public String getPassword () {
+  public String getPassword() {
     return this.password;
   }
 
-  public String getName () {
+  public String getName() {
     return this.name;
   }
 
-  public String getAddress () {
+  public String getAddress() {
     return this.address;
   }
 
-  public int getAccountNum () {
+  public int getAccountNum() {
     return this.accountNum;
   }
 
-  public boolean isAuthenticated () {
+  public boolean isAuthenticated() {
     return this.authenticated;
   }
 

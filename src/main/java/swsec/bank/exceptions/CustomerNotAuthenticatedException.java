@@ -7,12 +7,12 @@ public class CustomerNotAuthenticatedException extends Exception {
   private String username; 
 
   // constructor
-  public CustomerNotAuthenticatedException (String username) {
-    super ("Customer " + username + " is not authenticated.");
+  public CustomerNotAuthenticatedException(String username) {
+    super("Customer " + username + " is not authenticated.");
     this.username = username;
   }
 
-  public String getUsername () {
+  public String getUsername() {
     return username;
   }
 
